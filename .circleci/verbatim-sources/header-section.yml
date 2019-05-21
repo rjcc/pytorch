@@ -130,10 +130,23 @@ install_doc_push_script: &install_doc_push_script
     EOL
     chmod +x /home/circleci/project/doc_push_script.sh
 
-# `setup_ci_environment` has to be run **after** the ``checkout`` step because
-# it writes into the checkout directory and otherwise git will complain
+# `should_run_job` has to be run **after** the ``checkout`` step because
+# it uses scripts and Git the checkout directory and otherwise git will complain
 # that
 #   Directory (/home/circleci/project) you are trying to checkout to is not empty and not git repository
+should_run_job: &should_run_job
+  name: Should Run Job After checkout
+  no_output_timeout: "2m"
+  command: |
+    if [ -e ~/workspace/.circleci/scripts/should_run_job.sh ]; then
+      ~/workspace/.circleci/scripts/should_run_job.sh
+    elif [ -e /Users/distiller/pytorch-ci-env/workspace/.circleci/scripts/should_run_job.sh ]; then
+      /Users/distiller/pytorch-ci-env/workspace/.circleci/scripts/should_run_job.sh
+    else
+      .circleci/scripts/should_run_job.sh
+    fi
+
+# Also needs to be run after checkout
 setup_ci_environment: &setup_ci_environment
   name: Set Up CI Environment After Checkout
   no_output_timeout: "1h"
