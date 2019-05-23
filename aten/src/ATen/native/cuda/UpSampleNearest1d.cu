@@ -6,6 +6,7 @@
 #include <ATen/cuda/CUDAContext.h>
 #include <ATen/cuda/CUDAApplyUtils.cuh>
 #include <ATen/native/cuda/UpSample.cuh>
+#include <ATen/LegacyTHFunctionsCUDA.h>
 
 namespace at {
 namespace native {
@@ -96,6 +97,7 @@ static void upsample_nearest1d_out_cuda_template(
     Tensor& output,
     const Tensor& input,
     IntArrayRef output_size) {
+<<<<<<< HEAD
   TensorArg input_arg{input, "input", 1}, output_arg{output, "output", 2};
   checkAllSameGPU("upsample_nearest1d_out_cuda", {input_arg, output_arg});
 
@@ -194,6 +196,10 @@ static void upsample_nearest1d_backward_out_cuda_template(
       });
 
   AT_CUDA_CHECK(cudaGetLastError());
+=======
+    return legacy::cuda::_thnn_upsample_nearest1d_forward_out(
+        output, input, output_size);
+>>>>>>> Generate TH functions outside of Type
 }
 
 } // namespace
@@ -202,6 +208,7 @@ Tensor& upsample_nearest1d_out_cuda(
     Tensor& output,
     const Tensor& input,
     IntArrayRef output_size) {
+<<<<<<< HEAD
   upsample_nearest1d_out_cuda_template(output, input, output_size);
   return output;
 }
@@ -210,6 +217,10 @@ Tensor upsample_nearest1d_cuda(const Tensor& input, IntArrayRef output_size) {
   Tensor output = at::empty_like(input);
   upsample_nearest1d_out_cuda_template(output, input, output_size);
   return output;
+=======
+    return legacy::cuda::_thnn_upsample_nearest1d_forward(
+        input, output_size);
+>>>>>>> Generate TH functions outside of Type
 }
 
 Tensor& upsample_nearest1d_backward_out_cuda(
@@ -217,19 +228,29 @@ Tensor& upsample_nearest1d_backward_out_cuda(
     const Tensor& grad_output,
     IntArrayRef output_size,
     IntArrayRef input_size) {
+<<<<<<< HEAD
   upsample_nearest1d_backward_out_cuda_template(
       grad_input, grad_output, output_size, input_size);
   return grad_input;
+=======
+    return legacy::cuda::_thnn_upsample_nearest1d_backward_out(
+        grad_input, grad_output, output_size, input_size);
+>>>>>>> Generate TH functions outside of Type
 }
 
 Tensor upsample_nearest1d_backward_cuda(
     const Tensor& grad_output,
     IntArrayRef output_size,
     IntArrayRef input_size) {
+<<<<<<< HEAD
   Tensor grad_input = at::empty_like(grad_output);
   upsample_nearest1d_backward_out_cuda_template(
       grad_input, grad_output, output_size, input_size);
   return grad_input;
+=======
+    return legacy::cuda::_thnn_upsample_nearest1d_backward(
+        grad_output, output_size, input_size);
+>>>>>>> Generate TH functions outside of Type
 }
 
 } // namespace native

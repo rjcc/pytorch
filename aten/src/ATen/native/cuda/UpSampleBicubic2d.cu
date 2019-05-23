@@ -6,6 +6,7 @@
 #include <ATen/cuda/CUDAContext.h>
 #include <ATen/cuda/CUDAApplyUtils.cuh>
 #include <ATen/native/cuda/UpSample.cuh>
+#include <ATen/LegacyTHFunctionsCUDA.h>
 
 namespace at {
 namespace native {
@@ -311,19 +312,29 @@ Tensor& upsample_bicubic2d_out_cuda(
     const Tensor& input,
     IntArrayRef output_size,
     bool align_corners) {
+<<<<<<< HEAD
   upsample_bicubic2d_out_cuda_template(
       output, input, output_size, align_corners);
   return output;
+=======
+    return legacy::cuda::_thnn_upsample_bicubic2d_forward_out(
+        output, input, output_size, align_corners);
+>>>>>>> Generate TH functions outside of Type
 }
 
 Tensor upsample_bicubic2d_cuda(
     const Tensor& input,
     IntArrayRef output_size,
     bool align_corners) {
+<<<<<<< HEAD
   Tensor output = at::empty_like(input);
   upsample_bicubic2d_out_cuda_template(
       output, input, output_size, align_corners);
   return output;
+=======
+    return legacy::cuda::_thnn_upsample_bicubic2d_forward(
+        input, output_size, align_corners);
+>>>>>>> Generate TH functions outside of Type
 }
 
 Tensor& upsample_bicubic2d_backward_out_cuda(
@@ -332,9 +343,14 @@ Tensor& upsample_bicubic2d_backward_out_cuda(
     IntArrayRef output_size,
     IntArrayRef input_size,
     bool align_corners) {
+<<<<<<< HEAD
   upsample_bicubic2d_backward_out_cuda_template(
       grad_input, grad_output, output_size, input_size, align_corners);
   return grad_input;
+=======
+    return legacy::cuda::_thnn_upsample_bicubic2d_backward_out(
+        grad_input, grad_output, output_size, input_size, align_corners);
+>>>>>>> Generate TH functions outside of Type
 }
 
 Tensor upsample_bicubic2d_backward_cuda(
@@ -342,10 +358,15 @@ Tensor upsample_bicubic2d_backward_cuda(
     IntArrayRef output_size,
     IntArrayRef input_size,
     bool align_corners) {
+<<<<<<< HEAD
   Tensor grad_input = at::empty_like(grad_output);
   upsample_bicubic2d_backward_out_cuda_template(
       grad_input, grad_output, output_size, input_size, align_corners);
   return grad_input;
+=======
+    return legacy::cuda::_thnn_upsample_bicubic2d_backward(
+        grad_output, output_size, input_size, align_corners);
+>>>>>>> Generate TH functions outside of Type
 }
 
 } // namespace native
